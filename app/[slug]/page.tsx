@@ -245,18 +245,35 @@ function CompanyProfileView({ company }: { company: Company }) {
               </Section>
             )}
 
-            {company.website && (
-              <Section title="İnternet Sitesi">
-                <a
-                  href={company.website}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm font-mono text-emerald-600 hover:text-emerald-700 break-all"
-                >
-                  {company.website}
-                </a>
-              </Section>
-            )}
+            <Section title="İnternet Sitesi">
+              <a
+                href={`https://firma.protakip.com/${company.slug}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm font-mono text-emerald-600 hover:text-emerald-700 break-all"
+              >
+                firma.protakip.com/{company.slug}
+              </a>
+              {company.website &&
+                !company.website.includes("firma.protakip.com") &&
+                !company.website.includes("@") && (
+                  <p className="mt-2 text-xs text-zinc-500">
+                    Firmanın kendi sitesi:{" "}
+                    <a
+                      href={
+                        company.website.startsWith("http")
+                          ? company.website
+                          : `https://${company.website}`
+                      }
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-emerald-600 hover:text-emerald-700 break-all"
+                    >
+                      {company.website}
+                    </a>
+                  </p>
+                )}
+            </Section>
           </div>
 
           <div className="mt-6 text-center">
