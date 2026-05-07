@@ -1,0 +1,44 @@
+name: Deploy firma.protakip.com
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout for build artifact
+        uses: actions/checkout@v4
+
+      - name: Setup Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Build (verify before deploy)
+        run: npm run build
+
+      - name: Deploy to Hetzner
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          script: |
+            set -e
+            cd /var/www/firma-protakip
+            git pull --ff-only
+            npm install --no-audit --no-fund
+            npm run build
+            systemctl restart firma-protakip
+            sleep 4
+            systemctl is-active firma-protakip
+            echo "✅ Deployed: $(git log -1 --pretty=format:'%h %s')"
