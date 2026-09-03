@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { SITE_NAME, SITE_URL } from "@/lib/seo";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -8,17 +9,18 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://firma.protakip.com"),
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "ProTakip Firma Rehberi",
-    template: "%s | ProTakip",
+    default: SITE_NAME,
+    // Pages set "{Firma adı} – {İlçe}, {Şehir}"; the brand is appended exactly once here.
+    template: `%s | ${SITE_NAME}`,
   },
   description:
     "Halı yıkama, oto yıkama, klima servisi ve tüm hizmet sektöründeki firmaların ProTakip ile yönetilen profilleri. Adres, telefon, çalışma saatleri ve doğrudan WhatsApp iletişimi.",
   openGraph: {
     type: "website",
     locale: "tr_TR",
-    siteName: "ProTakip",
+    siteName: SITE_NAME,
   },
   robots: {
     index: true,
