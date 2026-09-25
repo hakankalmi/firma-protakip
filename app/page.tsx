@@ -12,6 +12,8 @@ const HOME_DESCRIPTION =
   "Halı yıkama, koltuk yıkama, temizlik ve diğer hizmet firmalarının şehre göre listelendiği ProTakip Firma Rehberi. Her firmanın adresi, telefonu ve WhatsApp bağlantısı tek sayfada.";
 
 export const metadata: Metadata = {
+  // Bu host arama icin degil (Hakan 25.09) — firma rehberi de dizine girmez.
+  robots: { index: false, follow: true },
   title: { absolute: HOME_TITLE },
   description: HOME_DESCRIPTION,
   alternates: { canonical: SITE_URL },

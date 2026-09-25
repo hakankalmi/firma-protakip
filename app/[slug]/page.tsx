@@ -75,14 +75,19 @@ export async function generateMetadata({
     },
   };
 
-  if (!isRichProfile(company)) {
-    // Thin profile: stays reachable (HTTP 200, links followed) but out of the index.
-    metadata.robots = {
-      index: false,
-      follow: true,
-      googleBot: { index: false, follow: true },
-    };
-  }
+  // Bu host arama icin DEGIL: web sitesi olmayan firmalar WhatsApp Business
+  // baglantisinda bir adres istendigi icin buraya kondu (Hakan 25.09). Sayfa
+  // 200 dondugu surece dogrulama calisir; dizine girmesi gerekmiyor.
+  //
+  // Neden kosulsuz: govdeler 43-51 kelime ve Google hepsine "Kesfedildi -
+  // dizine eklenmedi" diyordu. 581 ince sayfa protakip.com mulkunde duruyor;
+  // ayni desen haliyikamacilar.com'u 6 ay gomdu. `isRichProfile` esigi icerik
+  // degil ALAN sayiyor (telefon + sehir = 2 puan), o yuzden yeterli koruma degil.
+  metadata.robots = {
+    index: false,
+    follow: true,
+    googleBot: { index: false, follow: true },
+  };
 
   return metadata;
 }

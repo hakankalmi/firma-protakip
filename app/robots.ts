@@ -1,13 +1,18 @@
 import type { MetadataRoute } from "next";
-import { SITE_URL } from "@/lib/seo";
 
 /**
- * Search crawlers (Googlebot, Bingbot, ...) may crawl everything; only
- * AI-training crawlers are blocked. Thin profiles are kept out of the index
- * with a noindex meta tag, not here, so their links are still followed.
+ * Bu host arama icin DEGIL: web sitesi olmayan firmalar WhatsApp Business
+ * baglantisinda bir adres istendigi icin var (Hakan 25.09). Butun sayfalar
+ * `noindex` meta etiketi tasir ve SITE HARITASI YOK.
  *
- * Cloudflare's managed "Content Signals" block is prepended at the edge; the
- * directives below are served verbatim after it.
+ * 🔴 Arama botlarina yine de ACIK kalinir: robots.txt ile engellenen bir
+ * sayfayi Google OKUYAMAZ, dolayisiyla noindex'i de goremez ve adres dizinde
+ * asili kalabilir. Engelleme degil, okutup noindex gostermek dogru yol.
+ *
+ * Yalniz yapay zeka egitim botlari engellenir.
+ *
+ * Cloudflare'in yonetilen "Content Signals" blogu kenarda one eklenir; asagisi
+ * oldugu gibi sunulur.
  */
 const AI_TRAINING_BOTS = [
   "GPTBot",
@@ -26,6 +31,7 @@ export default function robots(): MetadataRoute.Robots {
       { userAgent: "*", allow: "/" },
       { userAgent: AI_TRAINING_BOTS, disallow: "/" },
     ],
-    sitemap: `${SITE_URL}/sitemap.xml`,
+    // Site haritasi YOK: noindex bir sayfayi haritada tutmak Google'a celiskili
+    // sinyal verir (SEO manifestosu §3).
   };
 }
